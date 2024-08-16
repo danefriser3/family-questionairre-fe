@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 export interface Dataset {
-    dataset: Family[];
+    dataset: Family[] | null;
     load: () => void;
     exported: Family[];
 }

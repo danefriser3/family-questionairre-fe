@@ -8,12 +8,13 @@ import { Close } from '@mui/icons-material';
 
 function App() {
 
-  const [dataset, setDataset] = useState<Family[]>([]);
+  const [dataset, setDataset] = useState<Family[] | null>(null);
   const [open, setOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState("");
   const [exported,] = useState<Family[]>(JSON.parse(sessionStorage.getItem("exported")!) ?? []);
 
   const fetchChildren = useCallback(() => {
+    setDataset(null);
     axios.get('http://localhost:5000/api/children/childrenList').then(t =>
       setDataset(t.data.children.map((chil: Family) => {
         return {
@@ -25,7 +26,7 @@ function App() {
         }
       }
       )))
-      .catch(e => { setSnackbarMsg(e.message); setOpen(true); });
+      .catch(e => { setSnackbarMsg(e.message); setOpen(true); setDataset([]) });
   }, [exported])
 
   useEffect(() => {

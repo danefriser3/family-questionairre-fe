@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import Questionnaire from "../dialog/questionairre";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, IconButton, Stack } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Divider, IconButton, Stack } from "@mui/material";
 import axios from "axios";
 import { DeleteSweep, Sync } from "@mui/icons-material";
 import { API_URL, columns, NO_DATA } from "../../utils/consts";
@@ -8,7 +8,7 @@ import { Dataset } from "../../utils/types";
 import { DeletionConfirmDialog } from "../dialog/deletionConfirm";
 import { useState } from "react";
 
-export const Table = ({ dataset, load, exported }: Dataset) => {
+export const Table = ({ dataset = null, load, exported }: Dataset) => {
 
 
     const [open, setOpen] = useState(false);
@@ -46,7 +46,7 @@ export const Table = ({ dataset, load, exported }: Dataset) => {
             action={
                 <Stack direction={"row"} gap={1}>
                     <DeletionConfirmDialog open={open} handleClose={() => setOpen(false)} handleDeleteAll={handleDeleteAll}>
-                        <IconButton disabled={dataset.length === 0} size="small" onClick={() => setOpen(true)} color="warning">
+                        <IconButton disabled={dataset?.length === 0} size="small" onClick={() => setOpen(true)} color="warning">
                             <DeleteSweep fontSize="small" />
                         </IconButton>
                     </DeletionConfirmDialog>
@@ -56,8 +56,8 @@ export const Table = ({ dataset, load, exported }: Dataset) => {
             }
         />
         <Divider />
-        <CardContent>
-            <DataGrid
+        <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {dataset !== null && <DataGrid
                 getCellClassName={
                     () => "cell-middle-vertical"
                 }
@@ -73,11 +73,12 @@ export const Table = ({ dataset, load, exported }: Dataset) => {
                 }}
                 localeText={{ noRowsLabel: NO_DATA }}
                 pageSizeOptions={[5, 10, 20]} />
+                || <CircularProgress />}
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "end" }}>
-            <Button disabled={dataset.length === 0} color='error' variant='contained' size='small' onClick={() => handleExport('all')}>Export All to CSV</Button>
-            <Button disabled={dataset.length === 0 || exported.length === dataset.length} color='info' variant='contained' size='small' onClick={() => handleExport('changed')}>Export Changed to CSV</Button>
+            <Button disabled={dataset?.length === 0} color='error' variant='contained' size='small' onClick={() => handleExport('all')}>Export All to CSV</Button>
+            <Button disabled={dataset?.length === 0 || exported.length === dataset?.length} color='info' variant='contained' size='small' onClick={() => handleExport('changed')}>Export Changed to CSV</Button>
         </CardActions>
     </Card>
 }

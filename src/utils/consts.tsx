@@ -60,4 +60,4 @@ export const columns = (load: () => void) => [
 ]
 
 export const API_URL = "http://localhost:5000/api/children";
-export const NO_DATA = "No data to show";
+export const NO_DATA = "No data to show. Click on the + button to add a new family member.";
