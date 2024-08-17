@@ -3,7 +3,7 @@ import './App.css';
 import { Table } from './components/table/table';
 import axios from 'axios';
 import { Family } from './utils/types';
-import { IconButton, Snackbar } from '@mui/material';
+import { IconButton, Snackbar, Typography } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 function App() {
@@ -35,6 +35,7 @@ function App() {
 
   return (
     <div className="App">
+      <Typography variant='h5' textAlign={"center"} fontWeight={"bold"} fontSize={"24px"}>Family questionairre</Typography>
       <Table dataset={dataset} load={fetchChildren} exported={exported} />
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

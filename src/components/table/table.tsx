@@ -36,11 +36,7 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
             .catch(e => console.log(e.message));
     };
 
-    return <Card style={{
-        borderRadius: ".5em",
-        boxShadow: "-2px 2px 7px rgba(0, 0, 0, 0.5)",
-        width: "fit-content", minWidth: "1024px", display: "flex", flexDirection: "column", gap: "8px", placeSelf: "center"
-    }}>
+    return <Card className={"card-table"}>
         <CardHeader
             title="Family Members"
             action={
@@ -60,7 +56,7 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
             }
         />
         <Divider />
-        <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <CardContent sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             {(dataset !== null ? <DataGrid
                 getCellClassName={
                     () => "cell-middle-vertical"
@@ -84,5 +80,5 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
             <Button disabled={dataset?.length === 0} color='error' variant='contained' size='small' onClick={() => handleExport('all')}>Export All to CSV</Button>
             <Button disabled={dataset?.length === 0 || exported.length === dataset?.length} color='info' variant='contained' size='small' onClick={() => handleExport('changed')}>Export Changed to CSV</Button>
         </CardActions>
-    </Card>
+    </Card >
 }
