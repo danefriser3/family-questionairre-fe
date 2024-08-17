@@ -15,6 +15,7 @@ import {
     Snackbar,
     Stack,
     TextField,
+    Tooltip,
     Typography
 } from '@mui/material';
 import { Add, Publish } from '@mui/icons-material';
@@ -76,12 +77,19 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
             : [...animals, animal]);
     };
 
+    const validateEmail = () => {
+        if (!email) return false;
+        return email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+    }
+
+    const validateName = () => {
+        if (!name || name.length < 2) return false;
+        if (name.split(" ").some(n => n !== "" && n.length < 2)) return false;
+        return true;
+    }
 
     const validateFields = () => {
-        if (!name || name.length < 2 || !email || !gender || !animals) return false;
-        if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) return false;
-        const names = name.split(" ");
-        if (names.some(n => n.length < 2)) return false;
+        if (!validateName() || !validateEmail() || !gender || !animals) return false;
         return true;
     }
 
@@ -101,9 +109,11 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
 
     return (
         <>
-            <IconButton size="small" color='success' onClick={() => setOpenDialog(true)}>
-                <Add fontSize='small' />
-            </IconButton>
+            <Tooltip title={<Typography>Add new family member</Typography>}>
+                <IconButton size="small" color='success' onClick={() => setOpenDialog(true)}>
+                    <Add fontSize='small' />
+                </IconButton>
+            </Tooltip>
             <Dialog
                 maxWidth="xs"
                 fullWidth
@@ -127,8 +137,8 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                                 required
-                                error={validFields && name === ""}
-                            />
+                                error={validFields && !validateName()}
+                            />{validFields && !validateName() && <Typography variant='caption' color={"red"}>Check the name</Typography>}
                         </Stack>
                         <Stack justifyContent={"space-between"} direction={"column"}>
                             <Typography variant='body1'>Email:</Typography>
@@ -139,8 +149,9 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required
-                                error={validFields && email === ""}
+                                error={validFields && !validateEmail()}
                             />
+                            {validFields && !validateEmail() && <Typography variant='caption' color={"red"}>Check the email</Typography>}
                         </Stack>
                         <Stack justifyContent={"space-between"} direction={"column"}>
                             <Typography variant='body1'>Gender:</Typography>
@@ -171,6 +182,7 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
                                     value="diverse"
                                     onChange={(e: any) => setGender(e.target.value)} />
                             </RadioGroup>
+                            {validFields && gender === "" && <Typography color={"red"} variant='caption'>Select a gender</Typography>}
                         </Stack>
                         <Stack justifyContent={"space-between"} direction={"column"}>
                             <Typography variant='body1'>Favorite Animals:</Typography>
@@ -225,9 +237,9 @@ const Questionnaire = ({ load }: QuestionairreDialogProps) => {
                                     }
                                 />
                             </Box>
+                            {validFields && animals.length === 0 && <Typography color={"red"} variant='caption'>Select at least one animal</Typography>}
                         </Stack>
                     </Stack>
-                    {validFields && <Typography variant='body1' textAlign={"start"} fontWeight={"bold"}>Invalid / empty data. Please check again.</Typography>}
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: "end" }}>
                     <Button startIcon={<Publish />} color='success' variant='contained' size='small' onClick={handleSubmit}>Submit</Button>

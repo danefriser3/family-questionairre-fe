@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import Questionnaire from "../dialog/questionairre";
-import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Divider, IconButton, Stack } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Divider, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import axios from "axios";
 import { DeleteSweep, Sync } from "@mui/icons-material";
 import { API_URL, columns, NO_DATA } from "../../utils/consts";
@@ -39,19 +39,23 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
     return <Card style={{
         borderRadius: ".5em",
         boxShadow: "-2px 2px 7px rgba(0, 0, 0, 0.5)",
-        width: "1024px", display: "flex", flexDirection: "column", gap: "8px", placeSelf: "center"
+        width: "fit-content", minWidth: "1024px", display: "flex", flexDirection: "column", gap: "8px", placeSelf: "center"
     }}>
         <CardHeader
             title="Family Members"
             action={
                 <Stack direction={"row"} gap={1}>
                     <DeletionConfirmDialog open={open} handleClose={() => setOpen(false)} handleDeleteAll={handleDeleteAll}>
-                        <IconButton disabled={dataset?.length === 0} size="small" onClick={() => setOpen(true)} color="warning">
-                            <DeleteSweep fontSize="small" />
-                        </IconButton>
+                        <Tooltip title={<Typography>Delete all the entries</Typography>}>
+                            <IconButton disabled={dataset?.length === 0} size="small" onClick={() => setOpen(true)} color="warning">
+                                <DeleteSweep fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
                     </DeletionConfirmDialog>
                     <Questionnaire load={load} />
-                    <IconButton size="small" onClick={handleSync} color="info"><Sync fontSize="small" /></IconButton>
+                    <Tooltip title={<Typography>Reload dataset</Typography>}>
+                        <IconButton size="small" onClick={handleSync} color="info"><Sync fontSize="small" /></IconButton>
+                    </Tooltip>
                 </Stack>
             }
         />

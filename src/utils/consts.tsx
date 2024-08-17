@@ -1,6 +1,7 @@
-import { Male, Female, Transgender } from "@mui/icons-material";
-import { Chip, Typography } from "@mui/material";
+import { Male, Female, Transgender, Info, InfoRounded, InfoOutlined } from "@mui/icons-material";
+import { Chip, Stack, Tooltip, Typography } from "@mui/material";
 import { DeleteFamilyMemberCell } from "../components/table/deleteSingleMemberCell";
+import { GridColumnHeaderParams } from "@mui/x-data-grid";
 
 export const columns = (load: () => void) => [
     {
@@ -43,8 +44,15 @@ export const columns = (load: () => void) => [
     },
     {
         field: "exported",
-        headerName: "",
-        width: 120,
+        renderHeader: (params: any) => (
+            <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                <Typography>Exported</Typography>
+                <Tooltip title={<Typography>Indicates if a row has been previously exported to csv in the same session</Typography>}>
+                    <InfoOutlined fontSize="small" />
+                </Tooltip>
+            </Stack>
+        ),
+        width: 175,
         renderCell: (params: any) => {
             return <Chip color={params.value === true ? "success" : "error"} label={<Typography variant="caption">{params.value === true ? "Exported" : "Not Exported"}</Typography>} />
         }
