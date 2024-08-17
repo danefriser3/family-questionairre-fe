@@ -1,7 +1,6 @@
-import { Male, Female, Transgender, Info, InfoRounded, InfoOutlined } from "@mui/icons-material";
+import { Male, Female, Transgender, InfoOutlined } from "@mui/icons-material";
 import { Chip, Stack, Tooltip, Typography } from "@mui/material";
 import { DeleteFamilyMemberCell } from "../components/table/deleteSingleMemberCell";
-import { GridColumnHeaderParams } from "@mui/x-data-grid";
 
 export const columns = (load: () => void) => [
     {

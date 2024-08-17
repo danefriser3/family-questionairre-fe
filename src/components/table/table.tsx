@@ -61,7 +61,7 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
         />
         <Divider />
         <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {dataset !== null && <DataGrid
+            {(dataset !== null ? <DataGrid
                 getCellClassName={
                     () => "cell-middle-vertical"
                 }
@@ -77,7 +77,7 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
                 }}
                 localeText={{ noRowsLabel: NO_DATA }}
                 pageSizeOptions={[5, 10, 20]} />
-                || <CircularProgress />}
+                : <CircularProgress />)}
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "end" }}>
