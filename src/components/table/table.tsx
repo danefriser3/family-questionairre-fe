@@ -14,7 +14,10 @@ export const Table = ({ dataset = null, load, exported }: Dataset) => {
     const [open, setOpen] = useState(false);
 
     const handleDeleteAll = () => {
-        axios.delete(API_URL + '/deleteAll').then(() => load());
+        axios.delete(API_URL + '/deleteAll').then(() => load()).then(() => {
+            sessionStorage.setItem("exported", JSON.stringify([]));
+            window.location.reload();
+        });
     }
 
     const handleSync = () => {
